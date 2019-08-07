@@ -5,6 +5,10 @@
  */
 package ltudjava18hcb18424016bt2;
 
+import DAO.StudentDAO;
+import java.util.List;
+import pojos.Student;
+
 /**
  *
  * @author quang
@@ -15,7 +19,25 @@ public class Ltudjava18hcb18424016bt2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        // Thêm sinh viên
+        Student st = new Student();
+        st.setStudentCode("0312171");
+        st.setFullName("Tạ Tấn Thêm");
+        st.setGender(true);
+        st.setCardNumber("04568966");
+        boolean kq = StudentDAO.SaveStudent(st);
+        if (kq == true) {
+            System.out.println("Thêm thành công");
+        } else {
+            System.out.println("Thêm thất bại");
+        }
+
+        // Lấy danh sách sinh viên
+        List<Student> ds = StudentDAO.GetStudentList();
+        for (int i = 0; i < ds.size(); i++) {
+            Student sv = ds.get(i);
+            System.out.println("MSSV: " + sv.getStudentCode());
+            System.out.println("Họ và tên: " + sv.getFullName());
+        }
     }
-    
 }
