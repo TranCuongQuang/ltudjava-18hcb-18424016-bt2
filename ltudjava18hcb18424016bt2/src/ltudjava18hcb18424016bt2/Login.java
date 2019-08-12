@@ -5,23 +5,25 @@
  */
 package ltudjava18hcb18424016bt2;
 
+import DAO.LoginDAO;
 import javax.swing.JFrame;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import pojos.User;
 
 /**
  *
  * @author quang
  */
-public class Login extends JFrame {
+public class Login extends JFrame implements ActionListener {
 
     JButton btnLogin;
     JPanel panelLogin;
     JTextField txtUser;
-    JTextField txtPass;
+    JPasswordField txtPass;
     JLabel lblUser;
     JLabel lblPass;
 
@@ -51,9 +53,28 @@ public class Login extends JFrame {
         panelLogin.add(lblUser);
         panelLogin.add(lblPass);
 
+        btnLogin.addActionListener(this);
         getContentPane().add(panelLogin);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnLogin) {
+            String UserName = txtUser.getText().toString();
+            char[] arrPass = txtPass.getPassword();
+            String Pass = new String(arrPass);
+
+            User user = new User();
+            user = LoginDAO.Login(UserName, Pass);
+            //JOptionPane.showMessageDialog(null, "+++"+UserName + "//"  +Pass);
+
+            if (user == null) {
+                JOptionPane.showMessageDialog(null, "Tên đăng nhập hoặc mật khẩu không chính xác!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Success");
+            }
+        }
     }
 }

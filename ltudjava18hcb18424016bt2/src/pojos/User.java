@@ -9,13 +9,15 @@ public class User implements java.io.Serializable {
     private Integer userId;
     private String userName;
     private String password;
+    private String role;
 
     public User() {
     }
 
-    public User(String userName, String password) {
+    public User(String userName, String password, String role) {
         this.userName = userName;
         this.password = password;
+        this.role = role;
     }
 
     public Integer getUserId() {
@@ -42,4 +44,11 @@ public class User implements java.io.Serializable {
         this.password = password;
     }
 
+    public String getRole() {
+        return this.role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
