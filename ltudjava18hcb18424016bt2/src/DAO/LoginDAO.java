@@ -31,7 +31,7 @@ public class LoginDAO {
             us = (User) query.uniqueResult();
 
             if (us != null) {
-                System.out.println("User: " + us.getUserName());
+                System.out.println("User: " + us.getRole());
             }
         } catch (HibernateException ex) {
             //Log the exception

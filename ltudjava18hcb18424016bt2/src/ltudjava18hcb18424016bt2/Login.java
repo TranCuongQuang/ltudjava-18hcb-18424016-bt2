@@ -65,15 +65,22 @@ public class Login extends JFrame implements ActionListener {
             String UserName = txtUser.getText().toString();
             char[] arrPass = txtPass.getPassword();
             String Pass = new String(arrPass);
-
-            User user = new User();
-            user = LoginDAO.Login(UserName, Pass);
-            //JOptionPane.showMessageDialog(null, "+++"+UserName + "//"  +Pass);
-
-            if (user == null) {
-                JOptionPane.showMessageDialog(null, "Tên đăng nhập hoặc mật khẩu không chính xác!");
+            if (!UserName.isEmpty() && !Pass.isEmpty()) {
+                User user = new User();
+                user = LoginDAO.Login(UserName, Pass);
+                if (user == null) {
+                    JOptionPane.showMessageDialog(null, "Tên đăng nhập hoặc mật khẩu không chính xác!");
+                } else {
+                    // JOptionPane.showMessageDialog(null, "Success");
+                    dispose();
+                    Home h = new Home("Home");
+                    h.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    h.setVisible(true);
+                    h.setSize(600, 400);
+                    h.setLocation(500, 280);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Success");
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
             }
         }
     }
