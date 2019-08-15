@@ -18,8 +18,11 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import pojos.Student;
 
 /**
@@ -42,6 +45,29 @@ public class Class extends JPanel implements ActionListener {
         openButton = new JButton("Import");
         pnManClass.add(openButton);
         openButton.addActionListener(this);
+
+        String[] columns = new String[]{
+            "Id", "Name", "Hourly Rate", "Part Time"
+        };
+
+        //actual data for the table in a 2d array
+        Object[][] data = new Object[][]{
+            {1, "John", 40.0, false},
+            {2, "Rambo", 70.0, false},
+            {3, "Zorro", 60.0, true},};
+        //create table with data
+
+//        DefaultTableModel model = new DefaultTableModel();
+//        model.setColumnIdentifiers(columns);
+//
+//        model.addRow(new Object[]{"roll", "name", "true", "sec"});
+        JTable table = new JTable(data, columns);
+//        table.setModel(model);
+
+        //table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        //table.setFillsViewportHeight(true);
+        pnManClass.add(new JScrollPane(table));
+
         return pnManClass;
     }
 
@@ -68,9 +94,9 @@ public class Class extends JPanel implements ActionListener {
                 if (refix.equals("Class")) {
                     // Thêm sinh viên
                     Student st = new Student();
-                    st.setStudentCode(item[0]);
+                    st.setStudentId(item[0]);
                     st.setFullName(item[1]);
-                    st.setGender(true);
+                    st.setGender(item[2]);
                     st.setCardNumber(item[3]);
                     boolean kq = StudentDAO.SaveStudent(st);
                     if (kq == true) {

@@ -51,7 +51,7 @@ public class StudentDAO {
 
     public static boolean SaveStudent(Student st) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        if (StudentDAO.GetStudentByID(st.getStudentCode()) != null) {
+        if (StudentDAO.GetStudentByID(st.getStudentId()) != null) {
             return false;
         }
         Transaction transaction = null;

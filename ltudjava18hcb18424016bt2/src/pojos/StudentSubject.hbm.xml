@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Aug 15, 2019 11:25:09 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="pojos.Student" table="student" catalog="bt02" optimistic-lock="version">
+    <class name="pojos.StudentSubject" table="student_subject" catalog="bt02" optimistic-lock="version">
         <id name="studentId" type="string">
             <column name="StudentID" length="10" />
             <generator class="assigned" />
@@ -19,6 +19,9 @@
         </property>
         <property name="class_" type="string">
             <column name="Class" length="50" not-null="true" />
+        </property>
+        <property name="subjectId" type="string">
+            <column name="SubjectID" length="10" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>

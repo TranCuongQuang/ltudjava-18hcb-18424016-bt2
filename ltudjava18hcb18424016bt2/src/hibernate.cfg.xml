@@ -46,8 +46,9 @@ Contributor(s):
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/bt02?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
     <mapping resource="pojos/Student.hbm.xml"/>
+    <mapping resource="pojos/StudentSubject.hbm.xml"/>
     <mapping resource="pojos/Schedule.hbm.xml"/>
-    <mapping resource="pojos/Score.hbm.xml"/>
     <mapping resource="pojos/User.hbm.xml"/>
+    <mapping resource="pojos/Score.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

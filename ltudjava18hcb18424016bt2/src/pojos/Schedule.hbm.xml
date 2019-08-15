@@ -1,21 +1,24 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Aug 7, 2019 11:50:32 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated Aug 15, 2019 11:25:09 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="pojos.Schedule" table="schedule" catalog="bt02" optimistic-lock="version">
         <id name="scheduleId" type="java.lang.Integer">
             <column name="ScheduleID" />
             <generator class="identity" />
         </id>
-        <property name="subjectId" type="int">
-            <column name="SubjectID" not-null="true" />
+        <property name="subjectId" type="string">
+            <column name="SubjectID" length="10" not-null="true" />
         </property>
         <property name="subjectName" type="string">
             <column name="SubjectName" length="65535" not-null="true" />
         </property>
-        <property name="classRoom" type="string">
-            <column name="ClassRoom" length="10" not-null="true" />
+        <property name="room" type="string">
+            <column name="Room" length="10" not-null="true" />
+        </property>
+        <property name="class_" type="string">
+            <column name="Class" length="50" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>
