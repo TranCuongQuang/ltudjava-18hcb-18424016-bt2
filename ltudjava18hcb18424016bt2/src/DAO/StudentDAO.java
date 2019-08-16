@@ -19,12 +19,15 @@ import pojos.Student;
  */
 public class StudentDAO {
 
-    public static List<Student> GetStudentList() {
+    public static List<Student> GetStudentList(String Class) {
         List<Student> listStudent = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "select st from Student st";
+
+            String hql = "select st from Student st where class_ = :p_Class";
             Query query = session.createQuery(hql);
+            query.setParameter("p_Class", Class);
+
             listStudent = query.list();
         } catch (HibernateException ex) {
             //Log the exception
