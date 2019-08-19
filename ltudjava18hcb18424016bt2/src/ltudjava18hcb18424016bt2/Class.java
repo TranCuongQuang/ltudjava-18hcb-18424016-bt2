@@ -6,6 +6,9 @@
 package ltudjava18hcb18424016bt2;
 
 import DAO.StudentDAO;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -42,36 +45,79 @@ public class Class extends JPanel implements ActionListener {
     JButton btnSave;
     JTable table;
     JScrollPane sp;
+    JButton btnSave_Cre;
+    JTextField txtClass_Cre;
+    JTextField txtStudentID_Cre;
+    JTextField txtFullName_Cre;
+    JTextField txtGender_Cre;
+    JTextField txtCard_Cre;
 
     public JPanel CreateLayout() {
         pnManClass = new JPanel();
         TitledBorder titleClass = new TitledBorder("Quản lý lớp học");
         pnManClass.setBorder(titleClass);
-        //pnManClass.setLayout(null);
+        pnManClass.setLayout(new GridLayout(2, 1));
 
+        JPanel p1 = new JPanel();
+        p1.setLayout(new GridLayout(1, 2));
+
+        JPanel pnImport = new JPanel();
+        pnImport.setLayout(new GridLayout(10, 2, 2, 2));
+        TitledBorder titleImport = new TitledBorder("Import file");
+        pnImport.setBorder(titleImport);
         lblClass = new JLabel("Tên lớp");
         txtClass = new JTextField(20);
         fcCSV = new JFileChooser();
         btnImport = new JButton("Import");
         btnSave = new JButton("Lưu");
+        pnImport.add(lblClass);
+        pnImport.add(txtClass);
+        pnImport.add(btnImport);
+        pnImport.add(btnSave);
+        p1.add(pnImport);
+
+        JPanel pnCreate = new JPanel();
+        pnCreate.setLayout(new GridLayout(11, 2, 2, 2));
+        TitledBorder titleCreate = new TitledBorder("Thêm mới");
+        pnCreate.setBorder(titleCreate);
+        JLabel lblClass_Cre = new JLabel("Tên lớp");
+        txtClass_Cre = new JTextField(20);
+        JLabel lblStudentID_Cre = new JLabel("Mã SV");
+        txtStudentID_Cre = new JTextField(20);
+        JLabel lblFullName_Cre = new JLabel("Họ tên");
+        txtFullName_Cre = new JTextField(20);
+        JLabel lblGender_Cre = new JLabel("Giới tính");
+        txtGender_Cre = new JTextField(20);
+        JLabel lblCard_Cre = new JLabel("CMND");
+        txtCard_Cre = new JTextField(20);
+        btnSave_Cre = new JButton("Lưu");
+        pnCreate.add(lblClass_Cre);
+        pnCreate.add(txtClass_Cre);
+        pnCreate.add(lblStudentID_Cre);
+        pnCreate.add(txtStudentID_Cre);
+        pnCreate.add(lblFullName_Cre);
+        pnCreate.add(txtFullName_Cre);
+        pnCreate.add(lblGender_Cre);
+        pnCreate.add(txtGender_Cre);
+        pnCreate.add(lblCard_Cre);
+        pnCreate.add(txtCard_Cre);
+        pnCreate.add(btnSave_Cre);
+        p1.add(pnCreate);
+
+        JPanel p2 = new JPanel();
+        TitledBorder t2 = new TitledBorder("Danh sách lớp");
+        p2.setBorder(t2);
+        p2.setLayout(new GridLayout(1, 1));
         table = new JTable();
         sp = new JScrollPane(table);
+        p2.add(sp);
 
-        lblClass.setBounds(20, 28, 90, 20);
-        txtClass.setBounds(110, 30, 150, 20);
-        btnImport.setBounds(280, 30, 110, 20);
-        btnSave.setBounds(100, 60, 110, 20);
-
-        sp.setVisible(false);
-
-        pnManClass.add(lblClass);
-        pnManClass.add(txtClass);
-        pnManClass.add(btnImport);
-        pnManClass.add(btnSave);
-        pnManClass.add(sp);
+        pnManClass.add(p1);
+        pnManClass.add(p2);
 
         btnImport.addActionListener(this);
         btnSave.addActionListener(this);
+        btnSave_Cre.addActionListener(this);
 
         return pnManClass;
     }
@@ -85,6 +131,34 @@ public class Class extends JPanel implements ActionListener {
         } else if (e.getSource() == btnSave) {
             if (!txtClass.getText().isEmpty() && file != null) {
                 ReadData(file.getAbsolutePath(), "Class");
+            } else {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
+            }
+        } else if (e.getSource() == btnSave_Cre) {
+            if (!txtClass_Cre.getText().isEmpty()
+                    && !txtStudentID_Cre.getText().isEmpty()
+                    && !txtFullName_Cre.getText().isEmpty()
+                    && !txtGender_Cre.getText().isEmpty()
+                    && !txtCard_Cre.getText().isEmpty()) {
+
+                // Thêm sinh viên
+                Student st = new Student();
+                boolean kq = false;
+                st.setStudentId(txtStudentID_Cre.getText());
+                st.setFullName(txtFullName_Cre.getText());
+                st.setGender(txtGender_Cre.getText());
+                st.setCardNumber(txtCard_Cre.getText());
+                st.setClass_(txtClass_Cre.getText());
+                kq = StudentDAO.SaveStudent(st);
+
+                if (kq == true) {
+                    GetListStudentInClass(txtClass_Cre.getText());
+
+                    JOptionPane.showMessageDialog(null, "Thêm thành công.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Thêm thất bại.");
+                }
+
             } else {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
             }
@@ -119,12 +193,12 @@ public class Class extends JPanel implements ActionListener {
             if (refix.equals("Class")) {
                 if (kq == true) {
                     GetListStudentInClass(txtClass.getText());
-                   
+
                     // Clear data
                     txtClass.setText("");
                     file = null;
-                    
-                     JOptionPane.showMessageDialog(null, "Thêm thành công.");
+
+                    JOptionPane.showMessageDialog(null, "Thêm thành công.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Thêm thất bại.");
                 }
@@ -144,7 +218,7 @@ public class Class extends JPanel implements ActionListener {
     }
 
     public void GetListStudentInClass(String p_Class) {
-        sp.setVisible(true);
+        //sp.setVisible(true);
         String[] columns = new String[]{
             "Mã Sv",
             "Họ tên",
@@ -166,6 +240,6 @@ public class Class extends JPanel implements ActionListener {
             });
         });
         table.setModel(model);
-        
+
     }
 }

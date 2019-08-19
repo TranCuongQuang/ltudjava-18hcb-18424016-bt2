@@ -76,8 +76,8 @@ public class Login extends JFrame implements ActionListener {
                     Home h = new Home("Home");
                     h.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     h.setVisible(true);
-                    h.setSize(600, 400);
-                    h.setLocation(500, 280);
+                    h.setSize(800,600);
+                    h.setLocation(400, 20);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
