@@ -186,8 +186,6 @@ public class Class extends JPanel implements ActionListener {
                     st.setClass_(txtClass.getText());
                     kq = StudentDAO.SaveStudent(st);
 
-                } else if (refix.equals("TKB")) {
-                    System.out.println("Thông tin thời khóa biểu: [Mã môn học: " + item[0] + " , Tên môn học: " + item[1] + " , Phòng: " + item[2] + "]");
                 }
             }
             if (refix.equals("Class")) {
