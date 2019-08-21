@@ -5,19 +5,12 @@
  */
 package ltudjava18hcb18424016bt2;
 
-import DAO.ScheduleDAO;
+import DAO.SubjectStudentDAO;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import pojos.StudentSubject;
 
 /**
  *
@@ -33,176 +27,167 @@ import javax.swing.table.DefaultTableModel;
  */
 public class SaveDelStudentSubject extends JPanel implements ActionListener {
 
-    JFileChooser fcCSV;
-    JButton btnImport;
     JPanel pnManClass;
-    JLabel lblClass;
     JTextField txtClass;
-    File file;
+    JTextField txtSubject;
+    JTextField txtStudentID;
     JButton btnSave;
     JTable table;
     JScrollPane sp;
+    JButton btnSave_Cre;
+    JTextField txtClass_Cre;
+    JTextField txtStudentID_Cre;
+    JTextField txtFullName_Cre;
+    JTextField txtGender_Cre;
+    JTextField txtCard_Cre;
+    JTextField txtSubject_Cre;
 
     public JPanel CreateLayout() {
         pnManClass = new JPanel();
-        TitledBorder titleClass = new TitledBorder("Quản lý thời khóa biểu");
+        TitledBorder titleClass = new TitledBorder("Đăng ký, hủy học phần");
         pnManClass.setBorder(titleClass);
         pnManClass.setLayout(new GridLayout(2, 1));
 
-        JPanel pnImport = new JPanel();
-        pnImport.setLayout(new GridLayout(10, 2, 2, 2));
-        TitledBorder titleImport = new TitledBorder("Import file");
-        pnImport.setBorder(titleImport);
-        lblClass = new JLabel("Tên lớp");
+        JPanel p1 = new JPanel();
+        p1.setLayout(new GridLayout(1, 2));
+
+        JPanel pnCancel = new JPanel();
+        pnCancel.setLayout(new GridLayout(13, 2, 2, 2));
+        TitledBorder titleImport = new TitledBorder("Hủy học phần");
+        pnCancel.setBorder(titleImport);
+        JLabel lblClass = new JLabel("Tên lớp");
         txtClass = new JTextField(20);
-        fcCSV = new JFileChooser();
-        btnImport = new JButton("Import");
+        JLabel lblSubject = new JLabel("Mã môn học");
+        txtSubject = new JTextField(20);
+        JLabel lblStudentID = new JLabel("Mã SV");
+        txtStudentID = new JTextField(20);
+
         btnSave = new JButton("Lưu");
-        pnImport.add(lblClass);
-        pnImport.add(txtClass);
-        pnImport.add(btnImport);
-        pnImport.add(btnSave);
+        pnCancel.add(lblClass);
+        pnCancel.add(txtClass);
+        pnCancel.add(lblSubject);
+        pnCancel.add(txtSubject);
+        pnCancel.add(lblStudentID);
+        pnCancel.add(txtStudentID);
+
+        pnCancel.add(btnSave);
+        p1.add(pnCancel);
+
+        JPanel pnCreate = new JPanel();
+        pnCreate.setLayout(new GridLayout(13, 2, 2, 2));
+        TitledBorder titleCreate = new TitledBorder("Đăng ký học phần");
+        pnCreate.setBorder(titleCreate);
+        JLabel lblClass_Cre = new JLabel("Tên lớp");
+        txtClass_Cre = new JTextField(20);
+        JLabel lblSubject_Cre = new JLabel("Mã môn học");
+        txtSubject_Cre = new JTextField(20);
+        JLabel lblStudentID_Cre = new JLabel("Mã SV");
+        txtStudentID_Cre = new JTextField(20);
+        JLabel lblFullName_Cre = new JLabel("Họ tên");
+        txtFullName_Cre = new JTextField(20);
+        JLabel lblGender_Cre = new JLabel("Giới tính");
+        txtGender_Cre = new JTextField(20);
+        JLabel lblCard_Cre = new JLabel("CMND");
+        txtCard_Cre = new JTextField(20);
+        btnSave_Cre = new JButton("Lưu");
+        pnCreate.add(lblClass_Cre);
+        pnCreate.add(txtClass_Cre);
+        pnCreate.add(lblSubject_Cre);
+        pnCreate.add(txtSubject_Cre);
+        pnCreate.add(lblStudentID_Cre);
+        pnCreate.add(txtStudentID_Cre);
+        pnCreate.add(lblFullName_Cre);
+        pnCreate.add(txtFullName_Cre);
+        pnCreate.add(lblGender_Cre);
+        pnCreate.add(txtGender_Cre);
+        pnCreate.add(lblCard_Cre);
+        pnCreate.add(txtCard_Cre);
+        pnCreate.add(btnSave_Cre);
+        p1.add(pnCreate);
 
         JPanel p2 = new JPanel();
-        TitledBorder t2 = new TitledBorder("Danh sách thời khóa biểu");
+        TitledBorder t2 = new TitledBorder("Danh sách sinh viên");
         p2.setBorder(t2);
         p2.setLayout(new GridLayout(1, 1));
-        table = new JTable() {
-            //private static final long serialVersionUID = 1L;
-
-            @Override
-            public java.lang.Class getColumnClass(int column) {
-                switch (column) {
-                    case 0:
-                        return Integer.class;
-                    case 1:
-                        return String.class;
-                    case 2:
-                        return String.class;
-                    case 3:
-                        return String.class;
-                    case 4:
-                        return String.class;
-                    default:
-                        return Boolean.class;
-                }
-            }
-        };
-
-//        table.getSelectionModel().addListSelectionListener(
-//                new ListSelectionListener() {
-//            public void valueChanged(ListSelectionEvent event) {
-//                int viewRow = table.getSelectedRow();
-//                
-//                JOptionPane.showMessageDialog(null, "index: " + viewRow);
-//                
-//                if (viewRow < 0) {
-//                    //Selection got filtered away.
-//                    //statusText.setText("");
-//                } else {
-//                    int modelRow = table.convertRowIndexToModel(viewRow);
-////                    statusText.setText(
-////                        String.format("Selected Row in view: %d. " +
-////                            "Selected Row in model: %d.", 
-////                            viewRow, modelRow));
-//                }
-//            }
-//        }
-//        );
+        table = new JTable();
         sp = new JScrollPane(table);
         p2.add(sp);
 
-        pnManClass.add(pnImport);
+        pnManClass.add(p1);
         pnManClass.add(p2);
 
-        btnImport.addActionListener(this);
         btnSave.addActionListener(this);
+        btnSave_Cre.addActionListener(this);
 
         return pnManClass;
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnImport) {
-            int returnVal = fcCSV.showOpenDialog(SaveDelStudentSubject.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                file = fcCSV.getSelectedFile();
+        boolean kq = false;
+        if (e.getSource() == btnSave) {
+            if (!txtClass.getText().isEmpty()
+                    && !txtSubject.getText().isEmpty()
+                    && !txtStudentID.getText().isEmpty()) {
+                kq = SubjectStudentDAO.Delete(txtSubject.getText(), txtStudentID.getText(), txtClass.getText());
+                if (kq == true) {
+                    GetListStudentInClass(txtClass.getText(), txtSubject.getText());
+                    JOptionPane.showMessageDialog(null, "Hủy học phần thành công.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Hủy học phần thất bại hoặc không tìm thấy sinh viên.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
             }
-        } else if (e.getSource() == btnSave) {
-            if (!txtClass.getText().isEmpty() && file != null) {
-                ReadData(file.getAbsolutePath(), "TKB");
+        } else if (e.getSource() == btnSave_Cre) {
+            if (!txtClass_Cre.getText().isEmpty()
+                    && !txtStudentID_Cre.getText().isEmpty()
+                    && !txtFullName_Cre.getText().isEmpty()
+                    && !txtGender_Cre.getText().isEmpty()
+                    && !txtCard_Cre.getText().isEmpty()
+                    && !txtClass_Cre.getText().isEmpty()
+                    && !txtSubject_Cre.getText().isEmpty()) {
+
+                StudentSubject ss = new StudentSubject();
+                ss.setStudentId(txtStudentID_Cre.getText());
+                ss.setFullName(txtFullName_Cre.getText());
+                ss.setGender(txtGender_Cre.getText());
+                ss.setCardNumber(txtCard_Cre.getText());
+                ss.setClass_(txtClass_Cre.getText());
+                ss.setSubjectId(txtSubject_Cre.getText());
+                kq = SubjectStudentDAO.SaveStudentSubject(ss);
+
+                if (kq == true) {
+                    GetListStudentInClass(txtClass_Cre.getText(), txtSubject_Cre.getText());
+                    JOptionPane.showMessageDialog(null, "Thêm thành công.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Thêm thất bại.");
+                }
+
             } else {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
             }
         }
     }
 
-    public void ReadData(String file, String refix) {
-        BufferedReader br = null;
-        String line = "";
-        String Path = file;
-        boolean kq = false;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(Path), "UTF-8"));
-            line = br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] item = line.split(",");
-                if (refix.equals("TKB")) {
-                    // System.out.println("Thông tin thời khóa biểu: [Mã môn học: " + item[0] + " , Tên môn học: " + item[1] + " , Phòng: " + item[2] + "]");
-                    pojos.Schedule st = new pojos.Schedule();
-                    st.setSubjectId(item[0]);
-                    st.setSubjectName(item[1]);
-                    st.setRoom(item[2]);
-                    st.setClass_(txtClass.getText());
-                    kq = ScheduleDAO.SaveSchedule(st);
-                }
-            }
-            if (refix.equals("TKB")) {
-                if (kq == true) {
-                    GetListSchedule(txtClass.getText());
-                    // Clear data
-                    txtClass.setText("");
-                    file = null;
-                    JOptionPane.showMessageDialog(null, "Thêm thành công.");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Thêm thất bại.");
-                }
-            }
-        } catch (FileNotFoundException e) {
-        } catch (IOException e) {
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "File không tồn tại.");
-            }
-        }
-    }
-
-    public void GetListSchedule(String p_Class) {
+    public void GetListStudentInClass(String p_Class, String p_Subject) {
         String[] columns = new String[]{
-            "Mã TKB",
-            "Mã môn học",
-            "Tên môn học",
-            "Phòng",
-            "Lớp",
-            "Check box"
+            "Mã Sv",
+            "Họ tên",
+            "Giới tính",
+            "CMND",
+            "Lớp"
         };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
 
-        List<pojos.Schedule> listSchedule = null;
-        listSchedule = ScheduleDAO.GetScheduleList(p_Class);
-        listSchedule.forEach(item -> {
-            model.addRow(new Object[]{
-                item.getScheduleId(),
-                item.getSubjectId(),
-                item.getSubjectName(),
-                item.getRoom(),
-                item.getClass_(),
-                false
+        List<StudentSubject> listStudent = null;
+        listStudent = SubjectStudentDAO.GetStudentSubjectList(p_Class, p_Subject);
+        listStudent.forEach(item -> {
+            model.addRow(new Object[]{item.getStudentId(),
+                item.getFullName(),
+                item.getGender(),
+                item.getCardNumber(),
+                item.getClass_()
             });
         });
         table.setModel(model);
