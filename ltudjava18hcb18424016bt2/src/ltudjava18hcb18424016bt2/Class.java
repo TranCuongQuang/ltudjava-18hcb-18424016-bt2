@@ -6,8 +6,6 @@
 package ltudjava18hcb18424016bt2;
 
 import DAO.StudentDAO;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -185,17 +183,14 @@ public class Class extends JPanel implements ActionListener {
                     st.setCardNumber(item[3]);
                     st.setClass_(txtClass.getText());
                     kq = StudentDAO.SaveStudent(st);
-
                 }
             }
             if (refix.equals("Class")) {
                 if (kq == true) {
                     GetListStudentInClass(txtClass.getText());
-
                     // Clear data
                     txtClass.setText("");
                     file = null;
-
                     JOptionPane.showMessageDialog(null, "Thêm thành công.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Thêm thất bại.");
@@ -216,7 +211,6 @@ public class Class extends JPanel implements ActionListener {
     }
 
     public void GetListStudentInClass(String p_Class) {
-        //sp.setVisible(true);
         String[] columns = new String[]{
             "Mã Sv",
             "Họ tên",
@@ -238,6 +232,5 @@ public class Class extends JPanel implements ActionListener {
             });
         });
         table.setModel(model);
-
     }
 }

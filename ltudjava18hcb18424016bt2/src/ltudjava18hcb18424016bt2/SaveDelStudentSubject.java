@@ -6,8 +6,6 @@
 package ltudjava18hcb18424016bt2;
 
 import DAO.ScheduleDAO;
-import DAO.StudentDAO;
-import DAO.SubjectStudentDAO;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,17 +25,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import pojos.Student;
-import pojos.StudentSubject;
 
 /**
  *
  * @author quang
  */
-public class Schedule extends JPanel implements ActionListener {
+public class SaveDelStudentSubject extends JPanel implements ActionListener {
 
     JFileChooser fcCSV;
     JButton btnImport;
@@ -73,7 +67,48 @@ public class Schedule extends JPanel implements ActionListener {
         TitledBorder t2 = new TitledBorder("Danh sách thời khóa biểu");
         p2.setBorder(t2);
         p2.setLayout(new GridLayout(1, 1));
-        table = new JTable();
+        table = new JTable() {
+            //private static final long serialVersionUID = 1L;
+
+            @Override
+            public java.lang.Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return Integer.class;
+                    case 1:
+                        return String.class;
+                    case 2:
+                        return String.class;
+                    case 3:
+                        return String.class;
+                    case 4:
+                        return String.class;
+                    default:
+                        return Boolean.class;
+                }
+            }
+        };
+
+//        table.getSelectionModel().addListSelectionListener(
+//                new ListSelectionListener() {
+//            public void valueChanged(ListSelectionEvent event) {
+//                int viewRow = table.getSelectedRow();
+//                
+//                JOptionPane.showMessageDialog(null, "index: " + viewRow);
+//                
+//                if (viewRow < 0) {
+//                    //Selection got filtered away.
+//                    //statusText.setText("");
+//                } else {
+//                    int modelRow = table.convertRowIndexToModel(viewRow);
+////                    statusText.setText(
+////                        String.format("Selected Row in view: %d. " +
+////                            "Selected Row in model: %d.", 
+////                            viewRow, modelRow));
+//                }
+//            }
+//        }
+//        );
         sp = new JScrollPane(table);
         p2.add(sp);
 
@@ -88,7 +123,7 @@ public class Schedule extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnImport) {
-            int returnVal = fcCSV.showOpenDialog(Schedule.this);
+            int returnVal = fcCSV.showOpenDialog(SaveDelStudentSubject.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = fcCSV.getSelectedFile();
             }
@@ -107,9 +142,6 @@ public class Schedule extends JPanel implements ActionListener {
         String Path = file;
         boolean kq = false;
         try {
-            List<Student> listStudent = null;
-            listStudent = StudentDAO.GetStudentList(txtClass.getText());
-
             br = new BufferedReader(new InputStreamReader(new FileInputStream(Path), "UTF-8"));
             line = br.readLine();
             while ((line = br.readLine()) != null) {
@@ -122,20 +154,6 @@ public class Schedule extends JPanel implements ActionListener {
                     st.setRoom(item[2]);
                     st.setClass_(txtClass.getText());
                     kq = ScheduleDAO.SaveSchedule(st);
-
-                    if (kq == true) {
-
-                        listStudent.forEach(lst -> {
-                            StudentSubject ss = new StudentSubject();
-                            ss.setStudentId(lst.getStudentId());
-                            ss.setFullName(lst.getFullName());
-                            ss.setGender(lst.getGender());
-                            ss.setCardNumber(lst.getCardNumber());
-                            ss.setClass_(lst.getClass_());
-                            ss.setSubjectId(item[0]);
-                            SubjectStudentDAO.SaveStudentSubject(ss);
-                        });
-                    }
                 }
             }
             if (refix.equals("TKB")) {
@@ -169,7 +187,8 @@ public class Schedule extends JPanel implements ActionListener {
             "Mã môn học",
             "Tên môn học",
             "Phòng",
-            "Lớp"
+            "Lớp",
+            "Check box"
         };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
@@ -182,7 +201,8 @@ public class Schedule extends JPanel implements ActionListener {
                 item.getSubjectId(),
                 item.getSubjectName(),
                 item.getRoom(),
-                item.getClass_()
+                item.getClass_(),
+                false
             });
         });
         table.setModel(model);

@@ -24,6 +24,7 @@ public class Home extends JFrame {
 
     JMenuItem miClass;
     JMenuItem miSchedule;
+    JMenuItem miSaveDelStudentSubject;
     JPanel pnMaster;
 
     public Home(String Title) {
@@ -40,11 +41,16 @@ public class Home extends JFrame {
         // Quản lý thời khóa biểu
         Schedule sch = new Schedule();
         JPanel pnManSchedule = sch.CreateLayout();
+        
+          // Quản lý thời khóa biểu
+        SaveDelStudentSubject studentSubject = new SaveDelStudentSubject();
+        JPanel pnSaveDelStudentSubject = studentSubject.CreateLayout();
 
         // add vào card chung
         pnMaster = new JPanel(new CardLayout());
         pnMaster.add(pnManClass, "ManClass");
         pnMaster.add(pnManSchedule, "ManSchedule");
+        pnMaster.add(pnSaveDelStudentSubject,"ManSaveDelStudentSubject");
 
         CardLayout card = (CardLayout) (pnMaster.getLayout());
 
@@ -58,8 +64,17 @@ public class Home extends JFrame {
                 card.show(pnMaster, "ManSchedule");
             }
         });
+        
+         miSaveDelStudentSubject = new JMenuItem(new AbstractAction("Đăng ký, hủy học phần") {
+            public void actionPerformed(ActionEvent e) {
+                card.show(pnMaster, "ManSaveDelStudentSubject");
+            }
+        });
+         
+         
         m1.add(miClass);
         m1.add(miSchedule);
+        m1.add(miSaveDelStudentSubject);
 
         Container con = getContentPane();
         con.add(BorderLayout.NORTH, mb);
