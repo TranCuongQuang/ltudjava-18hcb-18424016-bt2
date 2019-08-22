@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
+import javax.management.JMException;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -25,6 +26,7 @@ public class Home extends JFrame {
     JMenuItem miClass;
     JMenuItem miSchedule;
     JMenuItem miSaveDelStudentSubject;
+    JMenuItem miManagerClass;
     JPanel pnMaster;
 
     public Home(String Title) {
@@ -41,40 +43,50 @@ public class Home extends JFrame {
         // Quản lý thời khóa biểu
         Schedule sch = new Schedule();
         JPanel pnManSchedule = sch.CreateLayout();
-        
-          // Quản lý thời khóa biểu
+
+        // Quản lý thời khóa biểu
         SaveDelStudentSubject studentSubject = new SaveDelStudentSubject();
         JPanel pnSaveDelStudentSubject = studentSubject.CreateLayout();
+
+        ManagerClass managerClass = new ManagerClass();
+        JPanel pnManagerClass = managerClass.CreateLayout();
 
         // add vào card chung
         pnMaster = new JPanel(new CardLayout());
         pnMaster.add(pnManClass, "ManClass");
         pnMaster.add(pnManSchedule, "ManSchedule");
-        pnMaster.add(pnSaveDelStudentSubject,"ManSaveDelStudentSubject");
+        pnMaster.add(pnSaveDelStudentSubject, "ManSaveDelStudentSubject");
+        pnMaster.add(pnManagerClass, "ManManagerClass");
 
         CardLayout card = (CardLayout) (pnMaster.getLayout());
 
-        miClass = new JMenuItem(new AbstractAction("Quản lý lớp học") {
+        miClass = new JMenuItem(new AbstractAction("Thêm sinh viên vào lớp học") {
             public void actionPerformed(ActionEvent e) {
                 card.show(pnMaster, "ManClass");
             }
         });
-        miSchedule = new JMenuItem(new AbstractAction("Quản lý thời khóa biểu") {
+        miSchedule = new JMenuItem(new AbstractAction("Thêm thời khóa biểu vào lớp học") {
             public void actionPerformed(ActionEvent e) {
                 card.show(pnMaster, "ManSchedule");
             }
         });
-        
-         miSaveDelStudentSubject = new JMenuItem(new AbstractAction("Đăng ký, hủy học phần") {
+
+        miSaveDelStudentSubject = new JMenuItem(new AbstractAction("Đăng ký, hủy học phần") {
             public void actionPerformed(ActionEvent e) {
                 card.show(pnMaster, "ManSaveDelStudentSubject");
             }
         });
-         
-         
+
+        miManagerClass = new JMenuItem(new AbstractAction("Xem danh sách lớp") {
+            public void actionPerformed(ActionEvent e) {
+                card.show(pnMaster, "ManManagerClass");
+            }
+        });
+
         m1.add(miClass);
         m1.add(miSchedule);
         m1.add(miSaveDelStudentSubject);
+        m1.add(miManagerClass);
 
         Container con = getContentPane();
         con.add(BorderLayout.NORTH, mb);
