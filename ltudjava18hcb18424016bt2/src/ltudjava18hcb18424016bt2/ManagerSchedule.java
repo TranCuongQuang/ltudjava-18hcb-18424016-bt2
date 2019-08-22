@@ -5,8 +5,7 @@
  */
 package ltudjava18hcb18424016bt2;
 
-import DAO.StudentDAO;
-import DAO.SubjectStudentDAO;
+import DAO.ScheduleDAO;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,27 +19,23 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import pojos.Student;
-import pojos.StudentSubject;
 
 /**
  *
  * @author quang
  */
-public class ManagerClass extends JPanel implements ActionListener {
+public class ManagerSchedule extends JPanel implements ActionListener {
 
     JPanel pnManClass;
     JLabel lblClass;
     JTextField txtClass;
-    JLabel lblSubject;
-    JTextField txtSubject;
     JButton btnSearch;
     JTable table;
     JScrollPane sp;
 
     public JPanel CreateLayout() {
         pnManClass = new JPanel();
-        TitledBorder titleClass = new TitledBorder("Danh sách lớp");
+        TitledBorder titleClass = new TitledBorder("Danh sách thời khóa biểu");
         pnManClass.setBorder(titleClass);
         pnManClass.setLayout(new GridLayout(2, 1));
 
@@ -50,13 +45,9 @@ public class ManagerClass extends JPanel implements ActionListener {
         p1.setBorder(titleImport);
         lblClass = new JLabel("Tên lớp");
         txtClass = new JTextField(20);
-        lblSubject = new JLabel("Mã môn học");
-        txtSubject = new JTextField(20);
         btnSearch = new JButton("Tìm kiếm");
         p1.add(lblClass);
         p1.add(txtClass);
-        p1.add(lblSubject);
-        p1.add(txtSubject);
         p1.add(btnSearch);
 
         JPanel p2 = new JPanel();
@@ -78,59 +69,32 @@ public class ManagerClass extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSearch) {
             if (!txtClass.getText().isEmpty()) {
-                if (!txtSubject.getText().isEmpty()) {
-                    GetListStudentSubjectInClass(txtClass.getText(), txtSubject.getText());
-                } else {
-                    GetListStudentInClass(txtClass.getText());
-                }
+                GetListSchedule(txtClass.getText());
             } else {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
             }
         }
     }
 
-    public void GetListStudentInClass(String p_Class) {
+    public void GetListSchedule(String p_Class) {
         String[] columns = new String[]{
-            "Mã Sv",
-            "Họ tên",
-            "Giới tính",
-            "CMND",
+            "Mã TKB",
+            "Mã môn học",
+            "Tên môn học",
+            "Phòng",
             "Lớp"
         };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
 
-        List<Student> listStudent = null;
-        listStudent = StudentDAO.GetStudentList(p_Class);
-        listStudent.forEach(item -> {
-            model.addRow(new Object[]{item.getStudentId(),
-                item.getFullName(),
-                item.getGender(),
-                item.getCardNumber(),
-                item.getClass_()
-            });
-        });
-        table.setModel(model);
-    }
-
-    public void GetListStudentSubjectInClass(String p_Class, String p_Subject) {
-        String[] columns = new String[]{
-            "Mã Sv",
-            "Họ tên",
-            "Giới tính",
-            "CMND",
-            "Lớp"
-        };
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(columns);
-
-        List<StudentSubject> listStudent = null;
-        listStudent = SubjectStudentDAO.GetStudentSubjectList(p_Class, p_Subject);
-        listStudent.forEach(item -> {
-            model.addRow(new Object[]{item.getStudentId(),
-                item.getFullName(),
-                item.getGender(),
-                item.getCardNumber(),
+        List<pojos.Schedule> listSchedule = null;
+        listSchedule = ScheduleDAO.GetScheduleList(p_Class);
+        listSchedule.forEach(item -> {
+            model.addRow(new Object[]{
+                item.getScheduleId(),
+                item.getSubjectId(),
+                item.getSubjectName(),
+                item.getRoom(),
                 item.getClass_()
             });
         });

@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
-import javax.management.JMException;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -27,6 +26,7 @@ public class Home extends JFrame {
     JMenuItem miSchedule;
     JMenuItem miSaveDelStudentSubject;
     JMenuItem miManagerClass;
+    JMenuItem miManagerSchedule;
     JPanel pnMaster;
 
     public Home(String Title) {
@@ -51,12 +51,16 @@ public class Home extends JFrame {
         ManagerClass managerClass = new ManagerClass();
         JPanel pnManagerClass = managerClass.CreateLayout();
 
+        ManagerSchedule managerSchedule = new ManagerSchedule();
+        JPanel pnManagerSchedule = managerSchedule.CreateLayout();
+
         // add vào card chung
         pnMaster = new JPanel(new CardLayout());
         pnMaster.add(pnManClass, "ManClass");
         pnMaster.add(pnManSchedule, "ManSchedule");
         pnMaster.add(pnSaveDelStudentSubject, "ManSaveDelStudentSubject");
         pnMaster.add(pnManagerClass, "ManManagerClass");
+        pnMaster.add(pnManagerSchedule, "ManManagerSchedule");
 
         CardLayout card = (CardLayout) (pnMaster.getLayout());
 
@@ -65,6 +69,7 @@ public class Home extends JFrame {
                 card.show(pnMaster, "ManClass");
             }
         });
+
         miSchedule = new JMenuItem(new AbstractAction("Thêm thời khóa biểu vào lớp học") {
             public void actionPerformed(ActionEvent e) {
                 card.show(pnMaster, "ManSchedule");
@@ -82,11 +87,17 @@ public class Home extends JFrame {
                 card.show(pnMaster, "ManManagerClass");
             }
         });
+        miManagerSchedule = new JMenuItem(new AbstractAction("Xem thời khóa biểu") {
+            public void actionPerformed(ActionEvent e) {
+                card.show(pnMaster, "ManManagerSchedule");
+            }
+        });
 
         m1.add(miClass);
         m1.add(miSchedule);
         m1.add(miSaveDelStudentSubject);
         m1.add(miManagerClass);
+        m1.add(miManagerSchedule);
 
         Container con = getContentPane();
         con.add(BorderLayout.NORTH, mb);
