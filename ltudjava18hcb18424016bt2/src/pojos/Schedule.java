@@ -56,14 +56,10 @@ public class Schedule  implements java.io.Serializable {
     public String getClass_() {
         return this.class_;
     }
-    
+
     public void setClass_(String class_) {
         this.class_ = class_;
     }
-
-
-
-
 }
 
 

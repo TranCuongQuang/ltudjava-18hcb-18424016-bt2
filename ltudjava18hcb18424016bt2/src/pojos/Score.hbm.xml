@@ -23,5 +23,14 @@
         <property name="studentId" type="string">
             <column name="StudentID" length="10" not-null="true" />
         </property>
+        <property name="fullName" type="string">
+            <column name="FullName" length="65535" not-null="true" />
+        </property>
+         <property name="subjectId" type="string">
+            <column name="SubjectID" length="10" not-null="true" />
+        </property>
+         <property name="class_" type="string">
+            <column name="Class" length="50" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>
