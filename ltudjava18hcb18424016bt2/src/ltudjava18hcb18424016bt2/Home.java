@@ -28,6 +28,7 @@ public class Home extends JFrame {
     JMenuItem miManagerClass;
     JMenuItem miManagerSchedule;
     JMenuItem miScoreView;
+    JMenuItem miManagerScoreView;
     JPanel pnMaster;
 
     public Home(String Title) {
@@ -58,6 +59,9 @@ public class Home extends JFrame {
         ScoreView scoreView = new ScoreView();
         JPanel pnScoreView = scoreView.CreateLayout();
 
+        ManagerScoreView managerScoreView = new ManagerScoreView();
+        JPanel pnManagerScoreView = managerScoreView.CreateLayout();
+
         // add vào card chung
         pnMaster = new JPanel(new CardLayout());
         pnMaster.add(pnManClass, "ManClass");
@@ -66,6 +70,7 @@ public class Home extends JFrame {
         pnMaster.add(pnManagerClass, "ManManagerClass");
         pnMaster.add(pnManagerSchedule, "ManManagerSchedule");
         pnMaster.add(pnScoreView, "ManScoreView");
+        pnMaster.add(pnManagerScoreView, "ManManagerScoreView");
 
         CardLayout card = (CardLayout) (pnMaster.getLayout());
 
@@ -105,12 +110,19 @@ public class Home extends JFrame {
             }
         });
 
+        miManagerScoreView = new JMenuItem(new AbstractAction("Xem điểm") {
+            public void actionPerformed(ActionEvent e) {
+                card.show(pnMaster, "ManManagerScoreView");
+            }
+        });
+
         m1.add(miClass);
         m1.add(miSchedule);
         m1.add(miSaveDelStudentSubject);
         m1.add(miManagerClass);
         m1.add(miManagerSchedule);
         m1.add(miScoreView);
+        m1.add(miManagerScoreView);
 
         Container con = getContentPane();
         con.add(BorderLayout.NORTH, mb);
