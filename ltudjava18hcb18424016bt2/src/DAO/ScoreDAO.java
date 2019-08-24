@@ -38,13 +38,15 @@ public class ScoreDAO {
         return listSchedule;
     }
 
-    public static Score GetScoreByID(String ID) {
+    public static Score GetScoreByID(String ID, String Class, String Subject) {
         Score st = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "FROM Score u WHERE u.studentId = :p_studentId";
+            String hql = "FROM Score u WHERE u.studentId = :p_studentId AND class_ = :p_Class AND subjectId = :p_SubjectId";
             Query query = session.createQuery(hql);
             query.setParameter("p_studentId", ID);
+            query.setParameter("p_Class", Class);
+            query.setParameter("p_SubjectId", Subject);
             st = (Score) query.uniqueResult();
 
         } catch (HibernateException ex) {
@@ -58,13 +60,33 @@ public class ScoreDAO {
 
     public static boolean SaveScore(Score st) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        if (ScoreDAO.GetScoreByID(st.getStudentId()) != null) {
+        if (ScoreDAO.GetScoreByID(st.getStudentId(), st.getClass_(), st.getSubjectId()) != null) {
             return false;
         }
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
             session.save(st);
+            transaction.commit();
+        } catch (HibernateException ex) {
+            //Log the exception
+            transaction.rollback();
+            System.err.println(ex);
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+
+    public static boolean UpdateScore(Score st) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        if (ScoreDAO.GetScoreByID(st.getStudentId(), st.getClass_(), st.getSubjectId()) == null) {
+            return false;
+        }
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(st);
             transaction.commit();
         } catch (HibernateException ex) {
             //Log the exception

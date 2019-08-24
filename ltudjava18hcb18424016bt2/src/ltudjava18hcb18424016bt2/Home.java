@@ -29,6 +29,7 @@ public class Home extends JFrame {
     JMenuItem miManagerSchedule;
     JMenuItem miScoreView;
     JMenuItem miManagerScoreView;
+    JMenuItem miUpdateScoreView;
     JPanel pnMaster;
 
     public Home(String Title) {
@@ -62,6 +63,9 @@ public class Home extends JFrame {
         ManagerScoreView managerScoreView = new ManagerScoreView();
         JPanel pnManagerScoreView = managerScoreView.CreateLayout();
 
+        UpdateScoreView updateScoreView = new UpdateScoreView();
+        JPanel pnUpdateScoreView = updateScoreView.CreateLayout();
+
         // add vào card chung
         pnMaster = new JPanel(new CardLayout());
         pnMaster.add(pnManClass, "ManClass");
@@ -71,6 +75,7 @@ public class Home extends JFrame {
         pnMaster.add(pnManagerSchedule, "ManManagerSchedule");
         pnMaster.add(pnScoreView, "ManScoreView");
         pnMaster.add(pnManagerScoreView, "ManManagerScoreView");
+        pnMaster.add(pnUpdateScoreView, "ManUpdateScoreView");
 
         CardLayout card = (CardLayout) (pnMaster.getLayout());
 
@@ -116,6 +121,12 @@ public class Home extends JFrame {
             }
         });
 
+        miUpdateScoreView = new JMenuItem(new AbstractAction("Cập nhật điểm") {
+            public void actionPerformed(ActionEvent e) {
+                card.show(pnMaster, "ManUpdateScoreView");
+            }
+        });
+
         m1.add(miClass);
         m1.add(miSchedule);
         m1.add(miSaveDelStudentSubject);
@@ -123,6 +134,7 @@ public class Home extends JFrame {
         m1.add(miManagerSchedule);
         m1.add(miScoreView);
         m1.add(miManagerScoreView);
+        m1.add(miUpdateScoreView);
 
         Container con = getContentPane();
         con.add(BorderLayout.NORTH, mb);
