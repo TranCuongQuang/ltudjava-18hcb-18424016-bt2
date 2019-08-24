@@ -15,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import pojos.User;
 
 /**
  *
@@ -30,111 +31,124 @@ public class Home extends JFrame {
     JMenuItem miScoreView;
     JMenuItem miManagerScoreView;
     JMenuItem miUpdateScoreView;
+    JMenuItem miScoreStudentView;
     JPanel pnMaster;
 
-    public Home(String Title) {
+    public Home(String Title, User user) {
         super(Title);
         // Menu
         JMenuBar mb = new JMenuBar();
         JMenu m1 = new JMenu("Menu");
         mb.add(m1);
 
-        // Quản lý thời lớp học
-        Class cl = new Class();
-        JPanel pnManClass = cl.CreateLayout();
-
-        // Quản lý thời khóa biểu
-        Schedule sch = new Schedule();
-        JPanel pnManSchedule = sch.CreateLayout();
-
-        // Quản lý thời khóa biểu
-        SaveDelStudentSubject studentSubject = new SaveDelStudentSubject();
-        JPanel pnSaveDelStudentSubject = studentSubject.CreateLayout();
-
-        ManagerClass managerClass = new ManagerClass();
-        JPanel pnManagerClass = managerClass.CreateLayout();
-
-        ManagerSchedule managerSchedule = new ManagerSchedule();
-        JPanel pnManagerSchedule = managerSchedule.CreateLayout();
-
-        ScoreView scoreView = new ScoreView();
-        JPanel pnScoreView = scoreView.CreateLayout();
-
-        ManagerScoreView managerScoreView = new ManagerScoreView();
-        JPanel pnManagerScoreView = managerScoreView.CreateLayout();
-
-        UpdateScoreView updateScoreView = new UpdateScoreView();
-        JPanel pnUpdateScoreView = updateScoreView.CreateLayout();
-
-        // add vào card chung
         pnMaster = new JPanel(new CardLayout());
-        pnMaster.add(pnManClass, "ManClass");
-        pnMaster.add(pnManSchedule, "ManSchedule");
-        pnMaster.add(pnSaveDelStudentSubject, "ManSaveDelStudentSubject");
-        pnMaster.add(pnManagerClass, "ManManagerClass");
-        pnMaster.add(pnManagerSchedule, "ManManagerSchedule");
-        pnMaster.add(pnScoreView, "ManScoreView");
-        pnMaster.add(pnManagerScoreView, "ManManagerScoreView");
-        pnMaster.add(pnUpdateScoreView, "ManUpdateScoreView");
-
         CardLayout card = (CardLayout) (pnMaster.getLayout());
 
-        miClass = new JMenuItem(new AbstractAction("Thêm sinh viên vào lớp học") {
-            public void actionPerformed(ActionEvent e) {
-                card.show(pnMaster, "ManClass");
-            }
-        });
+        if (user.getRole().equals("student")) {
+            ScoreStudentView scoreStudentView = new ScoreStudentView();
+            JPanel pnScoreStudentView = scoreStudentView.CreateLayout(user);
+            pnMaster.add(pnScoreStudentView, "ManScoreStudentView");
+            miScoreStudentView = new JMenuItem(new AbstractAction("Xem điểm sinh viên") {
+                public void actionPerformed(ActionEvent e) {
+                    card.show(pnMaster, "ManScoreStudentView");
+                }
+            });
+            m1.add(miScoreStudentView);
+        } else {
+            // Quản lý thời lớp học
+            Class cl = new Class();
+            JPanel pnManClass = cl.CreateLayout();
 
-        miSchedule = new JMenuItem(new AbstractAction("Thêm thời khóa biểu vào lớp học") {
-            public void actionPerformed(ActionEvent e) {
-                card.show(pnMaster, "ManSchedule");
-            }
-        });
+            // Quản lý thời khóa biểu
+            Schedule sch = new Schedule();
+            JPanel pnManSchedule = sch.CreateLayout();
 
-        miSaveDelStudentSubject = new JMenuItem(new AbstractAction("Đăng ký, hủy học phần") {
-            public void actionPerformed(ActionEvent e) {
-                card.show(pnMaster, "ManSaveDelStudentSubject");
-            }
-        });
+            // Quản lý thời khóa biểu
+            SaveDelStudentSubject studentSubject = new SaveDelStudentSubject();
+            JPanel pnSaveDelStudentSubject = studentSubject.CreateLayout();
 
-        miManagerClass = new JMenuItem(new AbstractAction("Xem danh sách lớp") {
-            public void actionPerformed(ActionEvent e) {
-                card.show(pnMaster, "ManManagerClass");
-            }
-        });
+            ManagerClass managerClass = new ManagerClass();
+            JPanel pnManagerClass = managerClass.CreateLayout();
 
-        miManagerSchedule = new JMenuItem(new AbstractAction("Xem thời khóa biểu") {
-            public void actionPerformed(ActionEvent e) {
-                card.show(pnMaster, "ManManagerSchedule");
-            }
-        });
+            ManagerSchedule managerSchedule = new ManagerSchedule();
+            JPanel pnManagerSchedule = managerSchedule.CreateLayout();
 
-        miScoreView = new JMenuItem(new AbstractAction("Import điểm") {
-            public void actionPerformed(ActionEvent e) {
-                card.show(pnMaster, "ManScoreView");
-            }
-        });
+            ScoreView scoreView = new ScoreView();
+            JPanel pnScoreView = scoreView.CreateLayout();
 
-        miManagerScoreView = new JMenuItem(new AbstractAction("Xem điểm") {
-            public void actionPerformed(ActionEvent e) {
-                card.show(pnMaster, "ManManagerScoreView");
-            }
-        });
+            ManagerScoreView managerScoreView = new ManagerScoreView();
+            JPanel pnManagerScoreView = managerScoreView.CreateLayout();
 
-        miUpdateScoreView = new JMenuItem(new AbstractAction("Cập nhật điểm") {
-            public void actionPerformed(ActionEvent e) {
-                card.show(pnMaster, "ManUpdateScoreView");
-            }
-        });
+            UpdateScoreView updateScoreView = new UpdateScoreView();
+            JPanel pnUpdateScoreView = updateScoreView.CreateLayout();
 
-        m1.add(miClass);
-        m1.add(miSchedule);
-        m1.add(miSaveDelStudentSubject);
-        m1.add(miManagerClass);
-        m1.add(miManagerSchedule);
-        m1.add(miScoreView);
-        m1.add(miManagerScoreView);
-        m1.add(miUpdateScoreView);
+            // add vào card chung
+            pnMaster.add(pnManClass, "ManClass");
+            pnMaster.add(pnManSchedule, "ManSchedule");
+            pnMaster.add(pnSaveDelStudentSubject, "ManSaveDelStudentSubject");
+            pnMaster.add(pnManagerClass, "ManManagerClass");
+            pnMaster.add(pnManagerSchedule, "ManManagerSchedule");
+            pnMaster.add(pnScoreView, "ManScoreView");
+            pnMaster.add(pnManagerScoreView, "ManManagerScoreView");
+            pnMaster.add(pnUpdateScoreView, "ManUpdateScoreView");
+
+            miClass = new JMenuItem(new AbstractAction("Thêm sinh viên vào lớp học") {
+                public void actionPerformed(ActionEvent e) {
+                    card.show(pnMaster, "ManClass");
+                }
+            });
+
+            miSchedule = new JMenuItem(new AbstractAction("Thêm thời khóa biểu vào lớp học") {
+                public void actionPerformed(ActionEvent e) {
+                    card.show(pnMaster, "ManSchedule");
+                }
+            });
+
+            miSaveDelStudentSubject = new JMenuItem(new AbstractAction("Đăng ký, hủy học phần") {
+                public void actionPerformed(ActionEvent e) {
+                    card.show(pnMaster, "ManSaveDelStudentSubject");
+                }
+            });
+
+            miManagerClass = new JMenuItem(new AbstractAction("Xem danh sách lớp") {
+                public void actionPerformed(ActionEvent e) {
+                    card.show(pnMaster, "ManManagerClass");
+                }
+            });
+
+            miManagerSchedule = new JMenuItem(new AbstractAction("Xem thời khóa biểu") {
+                public void actionPerformed(ActionEvent e) {
+                    card.show(pnMaster, "ManManagerSchedule");
+                }
+            });
+
+            miScoreView = new JMenuItem(new AbstractAction("Import điểm") {
+                public void actionPerformed(ActionEvent e) {
+                    card.show(pnMaster, "ManScoreView");
+                }
+            });
+
+            miManagerScoreView = new JMenuItem(new AbstractAction("Xem điểm") {
+                public void actionPerformed(ActionEvent e) {
+                    card.show(pnMaster, "ManManagerScoreView");
+                }
+            });
+
+            miUpdateScoreView = new JMenuItem(new AbstractAction("Cập nhật điểm") {
+                public void actionPerformed(ActionEvent e) {
+                    card.show(pnMaster, "ManUpdateScoreView");
+                }
+            });
+
+            m1.add(miClass);
+            m1.add(miSchedule);
+            m1.add(miSaveDelStudentSubject);
+            m1.add(miManagerClass);
+            m1.add(miManagerSchedule);
+            m1.add(miScoreView);
+            m1.add(miManagerScoreView);
+            m1.add(miUpdateScoreView);
+        }
 
         Container con = getContentPane();
         con.add(BorderLayout.NORTH, mb);

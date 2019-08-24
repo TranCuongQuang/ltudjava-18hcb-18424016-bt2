@@ -8,10 +8,7 @@ package ltudjava18hcb18424016bt2;
 import DAO.LoginDAO;
 import javax.swing.JFrame;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-import java.util.*;
 import pojos.User;
 
 /**
@@ -73,10 +70,10 @@ public class Login extends JFrame implements ActionListener {
                 } else {
                     // JOptionPane.showMessageDialog(null, "Success");
                     dispose();
-                    Home h = new Home("Home");
+                    Home h = new Home("Home", user);
                     h.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     h.setVisible(true);
-                    h.setSize(800,600);
+                    h.setSize(800, 600);
                     h.setLocation(400, 20);
                 }
             } else {

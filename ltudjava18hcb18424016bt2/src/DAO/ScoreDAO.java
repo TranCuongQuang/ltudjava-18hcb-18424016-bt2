@@ -38,6 +38,33 @@ public class ScoreDAO {
         return listSchedule;
     }
 
+    public static List<Score> GetScoreListBy(String StudentID, String Class, String Subject) {
+        List<Score> listSchedule = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            //System.out.println("User: " + StudentID + " Class: " + Class + " Subject: " + Subject);
+            String hql;
+            if (Subject.isEmpty()) {
+                hql = "select st from Score st where studentId = :p_studentId AND class_ = :p_Class";
+            } else {
+                hql = "select st from Score st where studentId = :p_studentId AND class_ = :p_Class AND subjectId = :p_SubjectId";
+            }
+            Query query = session.createQuery(hql);
+            query.setParameter("p_studentId", StudentID);
+            query.setParameter("p_Class", Class);
+            if (!Subject.isEmpty()) {
+                query.setParameter("p_SubjectId", Subject);
+            }
+            listSchedule = query.list();
+        } catch (HibernateException ex) {
+            //Log the exception
+            System.err.println(ex);
+        } finally {
+            session.close();
+        }
+        return listSchedule;
+    }
+
     public static Score GetScoreByID(String ID, String Class, String Subject) {
         Score st = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
