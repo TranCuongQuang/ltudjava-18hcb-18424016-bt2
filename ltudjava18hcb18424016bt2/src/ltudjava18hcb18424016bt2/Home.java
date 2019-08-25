@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import pojos.User;
 
@@ -32,6 +33,8 @@ public class Home extends JFrame {
     JMenuItem miManagerScoreView;
     JMenuItem miUpdateScoreView;
     JMenuItem miScoreStudentView;
+    JMenuItem miLogout;
+    JMenuItem miProfileView;
     JPanel pnMaster;
 
     public Home(String Title, User user) {
@@ -40,6 +43,9 @@ public class Home extends JFrame {
         JMenuBar mb = new JMenuBar();
         JMenu m1 = new JMenu("Menu");
         mb.add(m1);
+
+        JMenu m2 = new JMenu("Cá nhân");
+        mb.add(m2);
 
         pnMaster = new JPanel(new CardLayout());
         CardLayout card = (CardLayout) (pnMaster.getLayout());
@@ -149,6 +155,23 @@ public class Home extends JFrame {
             m1.add(miManagerScoreView);
             m1.add(miUpdateScoreView);
         }
+
+        miLogout = new JMenuItem(new AbstractAction("Đăng xuất") {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
+            }
+        });
+        m2.add(miLogout);
+
+        ProfileView profileView = new ProfileView();
+        JPanel pnProfileView = profileView.CreateLayout(user);
+        pnMaster.add(pnProfileView, "ManpnProfileView");
+        miProfileView = new JMenuItem(new AbstractAction("Đổi mật khẩu") {
+            public void actionPerformed(ActionEvent e) {
+                card.show(pnMaster, "ManpnProfileView");
+            }
+        });
+        m2.add(miProfileView);
 
         Container con = getContentPane();
         con.add(BorderLayout.NORTH, mb);
