@@ -39,13 +39,14 @@ public class ScheduleDAO {
         return listSchedule;
     }
 
-    public static Schedule GetScheduleByID(String ID) {
+    public static Schedule GetScheduleByID(String ID, String Class) {
         Schedule st = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "FROM Schedule u WHERE u.subjectId = :p_subjectId";
+            String hql = "FROM Schedule u WHERE u.subjectId = :p_subjectId AND u.class_ = :p_class";
             Query query = session.createQuery(hql);
             query.setParameter("p_subjectId", ID);
+            query.setParameter("p_class", Class);
             st = (Schedule) query.uniqueResult();
 
         } catch (HibernateException ex) {
@@ -59,7 +60,7 @@ public class ScheduleDAO {
 
     public static boolean SaveSchedule(Schedule st) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        if (ScheduleDAO.GetScheduleByID(st.getSubjectId()) != null) {
+        if (ScheduleDAO.GetScheduleByID(st.getSubjectId(), st.getClass_()) != null) {
             return false;
         }
         Transaction transaction = null;
