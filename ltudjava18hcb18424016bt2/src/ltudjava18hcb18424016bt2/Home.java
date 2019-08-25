@@ -158,7 +158,13 @@ public class Home extends JFrame {
 
         miLogout = new JMenuItem(new AbstractAction("Đăng xuất") {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
+                //JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
+                dispose();
+                javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        Login lg = new Login();
+                    }
+                });
             }
         });
         m2.add(miLogout);
